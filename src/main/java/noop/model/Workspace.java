@@ -17,11 +17,15 @@
 package noop.model;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Workspace {
+public class Workspace implements LanguageNode {
+  public final Set<Edge> edges = Sets.newHashSet();
+  public final List<LanguageNode> nodes = Lists.newArrayList();
 }

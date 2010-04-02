@@ -16,25 +16,20 @@
 
 package noop.operations;
 
-import noop.model.LanguageNode;
-import noop.model.Project;
-import noop.model.Root;
+import noop.model.Workspace;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Controller {
-  private Root rootNode;
+  private Workspace workspace;
 
-  public Controller(Root rootNode) {
-    this.rootNode = rootNode;
+  public Controller(Workspace workspace) {
+    this.workspace = workspace;
   }
 
-  public void apply(EditOperation operation) {
-    // find the affected node
-    // lookup right logic for edit type
-    if (operation instanceof NewProject) {
-      rootNode.addProject(new Project());
-    }
+  public void apply(NewNodeOperation operation) {
+    workspace.nodes.add(operation.newNode);
+    workspace.edges.addAll(operation.edges);
   }
 }

@@ -23,7 +23,4 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Parameter implements LanguageNode {
-  public List<? extends LanguageNode> getChildren() {
-    return Collections.emptyList();
-  }
 }

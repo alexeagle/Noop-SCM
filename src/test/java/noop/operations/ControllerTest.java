@@ -16,13 +16,18 @@
 
 package noop.operations;
 
+import com.google.common.collect.Lists;
+import noop.model.Edge;
+import noop.model.LanguageNode;
 import noop.model.Project;
-import noop.model.Root;
+import noop.model.Workspace;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static noop.model.Edge.EdgeType.CONTAIN;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -30,17 +35,21 @@ import static org.junit.Assert.assertEquals;
  */
 public class ControllerTest {
   private Controller controller;
-  private Root rootNode;
+  private Workspace workspace;
 
   @Before
   public void setUp() {
-    rootNode = new Root();
-    controller = new Controller(rootNode);
+    workspace = new Workspace();
+    controller = new Controller(workspace);
   }
 
-  @Test
-  public void shouldCreateANewProject() {
-    controller.apply(new NewProject("Hello World", "com.google.noop.example"));
-    assertEquals(Arrays.asList(new Project()), rootNode.getChildren());
+  @Test public void shouldMakeNewProject() {
+    LanguageNode newNode = new Project("helloWorld", "com.google");
+    Edge newEdge = new Edge(workspace, CONTAIN, newNode);
+    List<Edge> edges = newArrayList(newEdge);
+    controller.apply(new NewNodeOperation(newNode, edges));
+    assertEquals(newArrayList(newNode), workspace.nodes);
+    assertEquals(1, workspace.edges.size());
+    assertEquals(newEdge, workspace.edges.iterator().next());
   }
 }

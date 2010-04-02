@@ -16,7 +16,6 @@
 
 package noop.model;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -28,15 +27,28 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Project implements LanguageNode {
-  private List<Library> libraries = Lists.newArrayList();
+  private String name;
+  private String namespace;
 
-  public List<? extends LanguageNode> getChildren() {
-    return libraries;
+  public String getName() {
+    return name;
+  }
+
+  public String getNamespace() {
+    return namespace;
+  }
+
+  public Project(String name, String namespace) {
+    this.name = name;
+    this.namespace = namespace;
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(libraries).toHashCode();
+    return new HashCodeBuilder()
+        .append(name)
+        .append(namespace)
+        .toHashCode();
   }
 
   @Override
@@ -48,12 +60,16 @@ public class Project implements LanguageNode {
     }
     Project rhs = (Project) obj;
     return new EqualsBuilder()
-        .append(libraries, rhs.libraries)
+        .append(name, rhs.name)
+        .append(namespace, rhs.namespace)
         .isEquals();
   }
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this).append("libraries", libraries).toString();
+    return new ToStringBuilder(this)
+        .append("name", name)
+        .append("namespace", namespace)
+        .toString();
   }
 }
