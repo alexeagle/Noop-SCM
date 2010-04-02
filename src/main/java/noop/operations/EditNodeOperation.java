@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package noop.model;
-
-import com.google.common.collect.Lists;
-
-import java.util.List;
+package noop.operations;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Root implements LanguageNode {
-  private List<Project> projects = Lists.newArrayList();
+public class EditNodeOperation {
 
-  public List<Project> getChildren() {
-    return projects;
-  }
-
-  public void addProject(Project project) {
-    projects.add(project);
-  }
 }

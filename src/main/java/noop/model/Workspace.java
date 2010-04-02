@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package noop.operations;
+package noop.model;
+
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public interface EditOperation {
-  
+public class Workspace {
 }
