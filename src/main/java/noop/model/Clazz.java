@@ -23,4 +23,14 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Clazz implements LanguageNode {
+  public final String name;
+
+  public Clazz(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+  }
 }

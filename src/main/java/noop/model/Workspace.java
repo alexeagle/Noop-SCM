@@ -28,4 +28,16 @@ import java.util.Set;
 public class Workspace implements LanguageNode {
   public final Set<Edge> edges = Sets.newHashSet();
   public final List<LanguageNode> nodes = Lists.newArrayList();
+
+  @Override
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+    for (LanguageNode node : nodes) {
+      node.accept(v);
+    }
+    for (Edge edge : edges) {
+      edge.accept(v);
+    }
+    v.leave(this);
+  }
 }

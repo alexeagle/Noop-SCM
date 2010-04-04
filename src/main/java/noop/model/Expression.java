@@ -14,30 +14,10 @@
  * limitations under the License.
  */
 
-package noop.operations;
-
-import com.google.common.collect.Lists;
-import noop.model.Edge;
-import noop.model.LanguageNode;
-
-import java.util.List;
-
-import static noop.model.Edge.EdgeType.CONTAIN;
+package noop.model;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class NewNodeOperation implements MutationOperation {
-  public final LanguageNode newNode;
-  public final List<Edge> edges;
-
-  public NewNodeOperation(LanguageNode newNode, List<Edge> edges) {
-    this.newNode = newNode;
-    this.edges = edges;
-  }
-
-  public NewNodeOperation(LanguageNode newNode, LanguageNode container) {
-    this.newNode = newNode;
-    this.edges = Lists.newArrayList(new Edge(container, CONTAIN, newNode));
-  }
+public abstract class Expression implements LanguageNode {
 }

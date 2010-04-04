@@ -23,4 +23,8 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Parameter implements LanguageNode {
+  @Override
+  public void accept(ModelVisitor v) {
+    v.accept(this);
+  }
 }

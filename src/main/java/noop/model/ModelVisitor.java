@@ -16,11 +16,29 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Function implements LanguageNode {
+public abstract class ModelVisitor {
+  public void visit(Edge edge) {}
+
+  public void visit(Workspace workspace) {}
+
+  public void visit(Block block) {}
+
+  public void visit(Project project) {}
+
+  public void visit(MethodInvocation methodInvocation) {}
+
+  public void visit(Parameter parameter) {}
+
+  public void visit(Library library) {}
+
+  public void visit(Clazz clazz) {}
+
+  public void accept(Parameter parameter) {}
+
+  public void leave(Workspace workspace) {}
+
+  public void visit(StringLiteral stringLiteral) {}
 }

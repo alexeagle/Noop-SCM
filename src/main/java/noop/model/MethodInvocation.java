@@ -16,11 +16,24 @@
 
 package noop.model;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Method implements LanguageNode {
+public class MethodInvocation extends Expression {
+  public final List<Expression> arguments;
+
+  public MethodInvocation(Expression... arguments) {
+    this.arguments = Arrays.asList(arguments);
+  }
+
+  @Override
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+    for (Expression argument : arguments) {
+      argument.accept(v);
+    }
+  }
 }

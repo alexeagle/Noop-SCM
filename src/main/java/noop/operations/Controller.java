@@ -18,6 +18,9 @@ package noop.operations;
 
 import noop.model.Workspace;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
@@ -31,5 +34,11 @@ public class Controller {
   public void apply(NewNodeOperation operation) {
     workspace.nodes.add(operation.newNode);
     workspace.edges.addAll(operation.edges);
+  }
+
+  public void applyAll(List<NewNodeOperation> operations) {
+    for (NewNodeOperation operation : operations) {
+      apply(operation);
+    }
   }
 }

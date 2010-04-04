@@ -22,4 +22,5 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public interface LanguageNode {
+  void accept(ModelVisitor v);
 }

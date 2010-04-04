@@ -27,8 +27,8 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Project implements LanguageNode {
-  private String name;
-  private String namespace;
+  private final String name;
+  private final String namespace;
 
   public String getName() {
     return name;
@@ -66,10 +66,7 @@ public class Project implements LanguageNode {
   }
 
   @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("name", name)
-        .append("namespace", namespace)
-        .toString();
+  public void accept(ModelVisitor v) {
+    v.visit(this);
   }
 }

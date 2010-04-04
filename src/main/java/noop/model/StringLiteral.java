@@ -22,5 +22,15 @@ import java.util.List;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class StringLiteral implements LanguageNode {
+public class StringLiteral extends Expression {
+  public final String value;
+
+  public StringLiteral(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+  }
 }

@@ -23,4 +23,16 @@ import java.util.List;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Library implements LanguageNode {
+  public final String name;
+
+  @Override
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+  }
+
+  public Library(String name) {
+    this.name = name;
+
+
+  }
 }

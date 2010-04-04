@@ -26,6 +26,10 @@ public class Edge {
     this.dest = dest;
   }
 
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+  }
+
   public enum EdgeType {
     INVOKE,
     CONTAIN,
@@ -35,4 +39,9 @@ public class Edge {
   public final EdgeType type;
   public final LanguageNode src;
   public final LanguageNode dest;
+
+  @Override
+  public String toString() {
+    return src + "->" + dest;
+  }
 }
