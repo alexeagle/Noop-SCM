@@ -46,8 +46,7 @@ public class ControllerTest {
   @Test public void shouldMakeNewProject() {
     LanguageNode newNode = new Project("helloWorld", "com.google");
     Edge newEdge = new Edge(workspace, CONTAIN, newNode);
-    List<Edge> edges = newArrayList(newEdge);
-    controller.apply(new NewNodeOperation(newNode, edges));
+    controller.apply(new NewNodeOperation(newNode, newEdge));
     assertEquals(newArrayList(newNode), workspace.nodes);
     assertEquals(1, workspace.edges.size());
     assertEquals(newEdge, workspace.edges.iterator().next());

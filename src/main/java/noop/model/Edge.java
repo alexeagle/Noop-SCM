@@ -33,7 +33,9 @@ public class Edge {
   public enum EdgeType {
     INVOKE,
     CONTAIN,
-    OVERRIDE
+    OVERRIDE,
+    TYPEOF,
+    TARGET
   }
 
   public final EdgeType type;

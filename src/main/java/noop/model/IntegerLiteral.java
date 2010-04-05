@@ -16,24 +16,18 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Library implements LanguageNode {
-  public final String name;
-  public String copyright;
+public class IntegerLiteral extends Expression {
+  public final int value;
+
+  public IntegerLiteral(int value) {
+    this.value = value;
+  }
 
   @Override
   public void accept(ModelVisitor v) {
     v.visit(this);
-  }
-
-  public Library(String name) {
-    this.name = name;
-
-
   }
 }

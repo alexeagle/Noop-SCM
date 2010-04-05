@@ -16,20 +16,29 @@
 
 package noop.model;
 
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Block implements LanguageNode {
-  public String name;
+  public final String name;
+  public final Clazz returnType;
+  public final List<Parameter> parameters;
 
-  public Block(String name) {
+  public Block(String name, Clazz returnType, Parameter... parameters) {
     this.name = name;
+    this.returnType = returnType;
+    this.parameters = asList(parameters);
   }
 
   public Block() {
+    this.name = null;
+    this.returnType = null;
+    this.parameters = emptyList();
   }
 
   @Override

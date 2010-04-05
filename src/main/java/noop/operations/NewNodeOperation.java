@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import noop.model.Edge;
 import noop.model.LanguageNode;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static noop.model.Edge.EdgeType.CONTAIN;
@@ -31,9 +32,9 @@ public class NewNodeOperation implements MutationOperation {
   public final LanguageNode newNode;
   public final List<Edge> edges;
 
-  public NewNodeOperation(LanguageNode newNode, List<Edge> edges) {
+  public NewNodeOperation(LanguageNode newNode, Edge... edges) {
     this.newNode = newNode;
-    this.edges = edges;
+    this.edges = Arrays.asList(edges);
   }
 
   public NewNodeOperation(LanguageNode newNode, LanguageNode container) {

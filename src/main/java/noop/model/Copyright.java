@@ -16,24 +16,18 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Library implements LanguageNode {
-  public final String name;
-  public String copyright;
+public class Copyright implements LanguageNode {
+  public final String value;
+
+  public Copyright(String value) {
+    this.value = value;
+  }
 
   @Override
   public void accept(ModelVisitor v) {
     v.visit(this);
-  }
-
-  public Library(String name) {
-    this.name = name;
-
-
   }
 }

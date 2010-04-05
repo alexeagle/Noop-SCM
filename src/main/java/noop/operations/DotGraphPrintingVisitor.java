@@ -46,21 +46,55 @@ public class DotGraphPrintingVisitor extends ModelVisitor {
 
   @Override
   public void visit(Library library) {
-    out.format("%s [label=\"%s\"]\n", identityHashCode(library), library.name);
+    out.format("%s [label=\"%s\", shape=hexagon]\n", identityHashCode(library), library.name);
   }
 
   @Override
   public void visit(Block block) {
     out.format("%s [label=\"%s {}\"]\n", identityHashCode(block), block.name);
+    for (Parameter parameter : block.parameters) {
+      out.format("%s -> %s [label=param, style=dotted]\n",
+          identityHashCode(block), identityHashCode(parameter));
+    }
+    if (block.returnType != null) {
+      out.format("%s -> %s [label=return, style=dotted]\n",
+          identityHashCode(block), identityHashCode(block.returnType));
+    }
+  }
+
+  @Override
+  public void visit(Return aReturn) {
+    out.format("%s [label=\"%s\"]\n", identityHashCode(aReturn), "[return]");
+    out.format("%s -> %s [label=arg, style=dotted]\n",
+          identityHashCode(aReturn), identityHashCode(aReturn.returned));
+  }
+
+  @Override
+  public void visit(IntegerLiteral integerLiteral) {
+    out.format("%s [label=\"%s\"]\n", identityHashCode(integerLiteral), integerLiteral.value);        
+  }
+
+  @Override
+  public void visit(Parameter parameter) {
+    out.format("%s [label=\"%s\"]\n", identityHashCode(parameter), parameter.name);    
   }
 
   @Override
   public void visit(MethodInvocation methodInvocation) {
     out.format("%s [label=\"%s\"]\n", identityHashCode(methodInvocation), "[invoke]");
     for (Expression argument : methodInvocation.arguments) {
-      out.format("%s -> %s [label=arg, style=dashed]\n",
+      out.format("%s -> %s [label=arg, style=dotted]\n",
           identityHashCode(methodInvocation), identityHashCode(argument));
     }
+  }
+
+  @Override
+  public void visit(Copyright copyright) {
+    out.format("%s [label=\"%s\", shape=none]\n", identityHashCode(copyright), escape(copyright.value));
+  }
+
+  private String escape(String value) {
+    return value.replaceAll("\n", "\\\\n");
   }
 
   @Override
@@ -82,8 +116,12 @@ public class DotGraphPrintingVisitor extends ModelVisitor {
   public void visit(Edge edge) {
     out.format("%s -> %s ", identityHashCode(edge.src), identityHashCode(edge.dest));
     switch (edge.type) {
-      case INVOKE:
-        out.println("[label=invoke]");
+      case CONTAIN:
+        out.print("\n");
+        break;
+      default:
+        out.println("[label=\"" + edge.type.name().toLowerCase() + "\", style=dashed]");
+        break;
     }
   }
 }

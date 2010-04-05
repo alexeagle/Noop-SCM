@@ -36,9 +36,13 @@ public abstract class ModelVisitor {
 
   public void visit(Clazz clazz) {}
 
-  public void accept(Parameter parameter) {}
-
   public void leave(Workspace workspace) {}
 
   public void visit(StringLiteral stringLiteral) {}
+
+  public void visit(Return aReturn) {}
+
+  public void visit(IntegerLiteral integerLiteral) {}
+
+  public void visit(Copyright copyright) {}
 }
