@@ -16,6 +16,7 @@
 
 package noop.operations;
 
+import noop.model.Edge;
 import noop.model.Workspace;
 
 import java.util.ArrayList;
@@ -33,10 +34,21 @@ public class Controller {
 
   public void apply(NewNodeOperation operation) {
     workspace.nodes.add(operation.newNode);
-    workspace.edges.addAll(operation.edges);
+
+    for (Edge edge : operation.edges) {
+      if (!workspace.nodes.contains(edge.src)) {
+        throw new IllegalStateException(String.format("Cannot add edge [%s -> %s] due to non-existant src",
+            edge.src, edge.dest));
+      }
+      if (!workspace.nodes.contains(edge.dest)) {
+        throw new IllegalStateException(String.format("Cannot add edge [%s -> %s] due to non-existant dest",
+            edge.src, edge.dest));
+      }
+      workspace.edges.add(edge);
+    }
   }
 
-  public void applyAll(List<NewNodeOperation> operations) {
+  public void applyAll(NewNodeOperation... operations) {
     for (NewNodeOperation operation : operations) {
       apply(operation);
     }

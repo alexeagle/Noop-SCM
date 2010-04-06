@@ -33,7 +33,9 @@ public class Workspace implements LanguageNode {
   public void accept(ModelVisitor v) {
     v.visit(this);
     for (LanguageNode node : nodes) {
-      node.accept(v);
+      if (node != this) {
+        node.accept(v);
+      }
     }
     for (Edge edge : edges) {
       edge.accept(v);
