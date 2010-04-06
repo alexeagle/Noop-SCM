@@ -85,16 +85,17 @@ public class OperationsExampleMain {
                         new NewNodeOperation(consoleDep, sayHello,
                             new Edge(consoleDep, TYPEOF, consoleClazz)));
 
+    Documentation sayHelloDoc = new Documentation("This is the entry point for the Hello World app");
+    controller.apply(new NewNodeOperation(sayHelloDoc, sayHello));
+
     StringLiteral helloWorld = new StringLiteral("Hello, World!");
     controller.apply(new NewNodeOperation(helloWorld, sayHello,
             new Edge(helloWorld, TYPEOF, stringClazz)));
-
 
     Expression printHello = new MethodInvocation(helloWorld);
     controller.apply(new NewNodeOperation(printHello, sayHello,
             new Edge(printHello, TARGET, consoleDep),
             new Edge(printHello, INVOKE, printMethod)));
-
 
     IntegerLiteral zero = new IntegerLiteral(0);
     controller.applyAll(new NewNodeOperation(zero, sayHello,

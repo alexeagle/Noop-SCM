@@ -19,32 +19,15 @@ package noop.model;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public abstract class ModelVisitor {
-  public void visit(Edge edge) {}
+public class Documentation implements LanguageNode {
+  public final String summary;
 
-  public void visit(Workspace workspace) {}
+  public Documentation(String summary) {
+    this.summary = summary;
+  }
 
-  public void visit(Block block) {}
-
-  public void visit(Project project) {}
-
-  public void visit(MethodInvocation methodInvocation) {}
-
-  public void visit(Parameter parameter) {}
-
-  public void visit(Library library) {}
-
-  public void visit(Clazz clazz) {}
-
-  public void leave(Workspace workspace) {}
-
-  public void visit(StringLiteral stringLiteral) {}
-
-  public void visit(Return aReturn) {}
-
-  public void visit(IntegerLiteral integerLiteral) {}
-
-  public void visit(Copyright copyright) {}
-
-  public void visit(Documentation documentation) {}
+  @Override
+  public void accept(ModelVisitor v) {
+    v.visit(this);
+  }
 }

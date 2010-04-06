@@ -33,8 +33,8 @@ public class NewNodeOperation implements MutationOperation {
   public final List<Edge> edges;
 
   public NewNodeOperation(LanguageNode newNode, LanguageNode container, Edge... edges) {
-    this.newNode = newNode;
-    this.edges = Arrays.asList(edges);
+    this(newNode, container);    
+    this.edges.addAll(Arrays.asList(edges));
   }
 
   public NewNodeOperation(LanguageNode newNode, LanguageNode container) {

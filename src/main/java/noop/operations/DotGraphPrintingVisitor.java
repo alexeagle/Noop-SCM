@@ -93,6 +93,11 @@ public class DotGraphPrintingVisitor extends ModelVisitor {
     out.format("%s [label=\"%s\", shape=none]\n", identityHashCode(copyright), escape(copyright.value));
   }
 
+  @Override
+  public void visit(Documentation documentation) {
+    out.format("%s [label=\"%s\", shape=none]\n", identityHashCode(documentation), escape(documentation.summary));
+  }
+
   private String escape(String value) {
     return value.replaceAll("\n", "\\\\n");
   }
