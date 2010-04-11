@@ -36,7 +36,6 @@ public class OperationsExampleMain {
 
   public static void main(String[] args) throws FileNotFoundException {
     Workspace workspace = new Workspace();
-    workspace.nodes.add(workspace);
     Controller controller = new Controller(workspace);
     createNoopStdLib(workspace, controller);
     createHelloWorldProgram(workspace, controller);

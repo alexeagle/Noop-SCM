@@ -16,6 +16,9 @@
 
 package noop.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
@@ -45,5 +48,29 @@ public class Edge {
   @Override
   public String toString() {
     return src + "->" + dest;
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder()
+        .append(src)
+        .append(dest)
+        .append(type)
+        .toHashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) { return false; }
+    if (obj == this) { return true; }
+    if (obj.getClass() != getClass()) {
+      return false;
+    }
+    Edge rhs = (Edge) obj;
+    return new EqualsBuilder()
+        .append(src, rhs.src)
+        .append(dest, rhs.dest)
+        .append(type, rhs.type)
+        .isEquals();
   }
 }

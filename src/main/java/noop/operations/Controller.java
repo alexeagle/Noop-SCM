@@ -53,4 +53,8 @@ public class Controller {
       apply(operation);
     }
   }
+
+  public void apply(EditNodeOperation operation) {
+    
+  }
 }
