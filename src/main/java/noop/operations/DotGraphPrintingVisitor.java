@@ -26,76 +26,81 @@ import static java.lang.System.identityHashCode;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class DotGraphPrintingVisitor extends ModelVisitor {
+  private final Workspace workspace;
   private final PrintStream out;
 
-  public DotGraphPrintingVisitor(PrintStream out) {
+  public DotGraphPrintingVisitor(Workspace workspace, PrintStream out) {
+    this.workspace = workspace;
     this.out = out;
+  }
+
+  private int idFor(LanguageNode node) {
+    return workspace.nodes.indexOf(node);
   }
 
   @Override
   public void visit(Workspace workspace) {
     out.format("digraph workspace\n{\n");
-    out.format("%s [label=\"%s\", shape=house]\n", identityHashCode(workspace), "Workspace");
+    out.format("%s [label=\"%s\", shape=house]\n", idFor(workspace), "Workspace");
   }
 
   @Override
   public void visit(Project project) {
     out.format("%s [label=\"%s (%s)\", shape=box]\n",
-        identityHashCode(project), project.getName(), project.getNamespace());
+        idFor(project), project.getName(), project.getNamespace());
+
+    out.format("%s [label=\"%s\", shape=none]\n", identityHashCode(project.getCopyright()),
+        escape(project.getCopyright()));
+    out.format("%s -> %s\n", idFor(project), identityHashCode(project.getCopyright()));
   }
 
   @Override
   public void visit(Library library) {
-    out.format("%s [label=\"%s\", shape=hexagon]\n", identityHashCode(library), library.name);
+    out.format("%s [label=\"%s\", shape=hexagon]\n", idFor(library), library.name);
   }
 
   @Override
   public void visit(Block block) {
-    out.format("%s [label=\"%s {}\"]\n", identityHashCode(block), block.name);
+    out.format("%s [label=\"%s {}\"]\n", idFor(block), block.name);
     for (Parameter parameter : block.parameters) {
       out.format("%s -> %s [label=param, style=dotted]\n",
-          identityHashCode(block), identityHashCode(parameter));
+          idFor(block), idFor(parameter));
     }
     if (block.returnType != null) {
       out.format("%s -> %s [label=return, style=dotted]\n",
-          identityHashCode(block), identityHashCode(block.returnType));
+          idFor(block), idFor(block.returnType));
     }
   }
 
   @Override
   public void visit(Return aReturn) {
-    out.format("%s [label=\"%s\"]\n", identityHashCode(aReturn), "[return]");
+    out.format("%s [label=\"%s\"]\n", idFor(aReturn), "[return]");
     out.format("%s -> %s [label=arg, style=dotted]\n",
-          identityHashCode(aReturn), identityHashCode(aReturn.returned));
+          idFor(aReturn), idFor(aReturn.returned));
   }
 
   @Override
   public void visit(IntegerLiteral integerLiteral) {
-    out.format("%s [label=\"%s\"]\n", identityHashCode(integerLiteral), integerLiteral.value);        
+    out.format("%s [label=\"%s\"]\n", idFor(integerLiteral), integerLiteral.value);        
   }
 
   @Override
   public void visit(Parameter parameter) {
-    out.format("%s [label=\"%s\"]\n", identityHashCode(parameter), parameter.name);    
+    out.format("%s [label=\"%s\"]\n", idFor(parameter), parameter.name);    
   }
 
   @Override
   public void visit(MethodInvocation methodInvocation) {
-    out.format("%s [label=\"%s\"]\n", identityHashCode(methodInvocation), "[invoke]");
+    out.format("%s [label=\"%s\"]\n", idFor(methodInvocation), "[invoke]");
     for (Expression argument : methodInvocation.arguments) {
       out.format("%s -> %s [label=arg, style=dotted]\n",
-          identityHashCode(methodInvocation), identityHashCode(argument));
+          idFor(methodInvocation), idFor(argument));
     }
   }
 
   @Override
-  public void visit(Copyright copyright) {
-    out.format("%s [label=\"%s\", shape=none]\n", identityHashCode(copyright), escape(copyright.value));
-  }
-
-  @Override
   public void visit(Documentation documentation) {
-    out.format("%s [label=\"%s\", shape=none]\n", identityHashCode(documentation), escape(documentation.summary));
+    out.format("%s [label=\"%s\", shape=none]\n", idFor(documentation), escape(documentation.summary));
   }
 
   private String escape(String value) {
@@ -104,12 +109,12 @@ public class DotGraphPrintingVisitor extends ModelVisitor {
 
   @Override
   public void visit(StringLiteral stringLiteral) {
-    out.format("%s [label=\"\\\"%s\\\"\"]\n", identityHashCode(stringLiteral), stringLiteral.value);
+    out.format("%s [label=\"\\\"%s\\\"\"]\n", idFor(stringLiteral), stringLiteral.value);
   }
 
   @Override
   public void visit(Clazz clazz) {
-    out.format("%s [label=\"%s\"]\n", identityHashCode(clazz), clazz.name);
+    out.format("%s [label=\"%s\"]\n", idFor(clazz), clazz.name);
   }
 
   @Override
@@ -119,7 +124,7 @@ public class DotGraphPrintingVisitor extends ModelVisitor {
 
   @Override
   public void visit(Edge edge) {
-    out.format("%s -> %s ", identityHashCode(edge.src), identityHashCode(edge.dest));
+    out.format("%d -> %d ", edge.src, edge.dest);
     switch (edge.type) {
       case CONTAIN:
         out.print("\n");

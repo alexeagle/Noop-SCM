@@ -19,7 +19,7 @@ package noop.model;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class IntegerLiteral extends Expression {
+public class IntegerLiteral extends Expression<IntegerLiteral> {
   public final int value;
 
   public IntegerLiteral(int value) {

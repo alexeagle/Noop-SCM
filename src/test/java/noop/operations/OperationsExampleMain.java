@@ -39,11 +39,12 @@ public class OperationsExampleMain {
     Controller controller = new Controller(workspace);
     createNoopStdLib(workspace, controller);
     createHelloWorldProgram(workspace, controller);
-    workspace.accept(new DotGraphPrintingVisitor(new PrintStream(new FileOutputStream(new File(args[0])))));
+    PrintStream out = new PrintStream(new FileOutputStream(new File(args[0])));
+    workspace.accept(new DotGraphPrintingVisitor(workspace, out));
   }
 
   private static void createNoopStdLib(Workspace workspace, Controller controller) {
-    Project project = new Project("Noop", "com.google.noop");
+    Project project = new Project("Noop", "com.google.noop", "Apache 2");
     controller.apply(new NewNodeOperation(project, workspace));
 
     Library lang = new Library("lang");
@@ -62,17 +63,15 @@ public class OperationsExampleMain {
     controller.apply(new NewNodeOperation(printMethod, consoleClazz));
 
     Parameter printArg = new Parameter("s");
-    controller.apply(new NewNodeOperation(printArg, printMethod,
-            new Edge(printArg, TYPEOF, stringClazz)));
+    controller.apply(new NewNodeOperation(printArg, printMethod, TYPEOF, stringClazz));
 
     intClazz = new Clazz("Integer");
     controller.apply(new NewNodeOperation(intClazz, lang));
   }
 
   private static void createHelloWorldProgram(Workspace workspace, Controller controller) {
-    Project project = new Project("Hello World", "com.example");
-    controller.applyAll(new NewNodeOperation(project, workspace),
-                        new NewNodeOperation(new Copyright("Copyright 2010\nExample Co."), project));
+    Project project = new Project("Hello World", "com.example", "Copyright 2010\nExample Co.");
+    controller.apply(new NewNodeOperation(project, workspace));
 
     Library library = new Library("hello");
     controller.apply(new NewNodeOperation(library, project));
@@ -81,24 +80,19 @@ public class OperationsExampleMain {
 
     Block sayHello = new Block("say hello", intClazz, consoleDep);
     controller.applyAll(new NewNodeOperation(sayHello, library),
-                        new NewNodeOperation(consoleDep, sayHello,
-                            new Edge(consoleDep, TYPEOF, consoleClazz)));
+                        new NewNodeOperation(consoleDep, sayHello, TYPEOF, consoleClazz));
 
     Documentation sayHelloDoc = new Documentation("This is the entry point for the Hello World app");
     controller.apply(new NewNodeOperation(sayHelloDoc, sayHello));
 
     StringLiteral helloWorld = new StringLiteral("Hello, World!");
-    controller.apply(new NewNodeOperation(helloWorld, sayHello,
-            new Edge(helloWorld, TYPEOF, stringClazz)));
+    controller.apply(new NewNodeOperation(helloWorld, sayHello, TYPEOF, stringClazz));
 
     Expression printHello = new MethodInvocation(helloWorld);
-    controller.apply(new NewNodeOperation(printHello, sayHello,
-            new Edge(printHello, TARGET, consoleDep),
-            new Edge(printHello, INVOKE, printMethod)));
+    controller.apply(new NewNodeOperation(printHello, sayHello,  TARGET, consoleDep, INVOKE, printMethod));
 
     IntegerLiteral zero = new IntegerLiteral(0);
-    controller.applyAll(new NewNodeOperation(zero, sayHello,
-                            new Edge(zero, TYPEOF, intClazz)),
+    controller.applyAll(new NewNodeOperation(zero, sayHello, TYPEOF, intClazz),
                         new NewNodeOperation(new Return(zero), sayHello));
   }
 

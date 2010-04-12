@@ -19,7 +19,7 @@ package noop.model;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Documentation implements LanguageNode {
+public class Documentation extends LanguageNode<Documentation> {
   public final String summary;
 
   public Documentation(String summary) {

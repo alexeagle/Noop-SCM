@@ -16,10 +16,17 @@
 
 package noop.operations;
 
+import noop.model.LanguageNode;
+
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class EditNodeOperation implements MutationOperation {
-  private NodeReference ref;
+  public final int id;
+  public final LanguageNode newValue;
 
+  public EditNodeOperation(int id, LanguageNode newValue) {
+    this.id = id;
+    this.newValue = newValue;
+  }
 }

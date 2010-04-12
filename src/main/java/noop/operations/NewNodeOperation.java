@@ -16,29 +16,36 @@
 
 package noop.operations;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import noop.model.Edge;
 import noop.model.LanguageNode;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static noop.model.Edge.EdgeType.CONTAIN;
+import static noop.model.Edge.EdgeType;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class NewNodeOperation implements MutationOperation {
   public final LanguageNode newNode;
-  public final List<Edge> edges;
-
-  public NewNodeOperation(LanguageNode newNode, LanguageNode container, Edge... edges) {
-    this(newNode, container);    
-    this.edges.addAll(Arrays.asList(edges));
-  }
+  public final LanguageNode container;
+  public final Multimap<EdgeType, LanguageNode> edges = Multimaps.newArrayListMultimap();
 
   public NewNodeOperation(LanguageNode newNode, LanguageNode container) {
     this.newNode = newNode;
-    this.edges = Lists.newArrayList(new Edge(container, CONTAIN, newNode));
+    this.container = container;
+  }
+
+  public NewNodeOperation(LanguageNode newNode, LanguageNode container,
+                          Edge.EdgeType edgeType, LanguageNode dest) {
+    this(newNode, container);
+    edges.put(edgeType, dest);
+  }
+
+  public NewNodeOperation(LanguageNode newNode, LanguageNode container,
+                          Edge.EdgeType edgeType, LanguageNode dest,
+                          Edge.EdgeType edge2Type, LanguageNode dest2) {
+    this(newNode, container, edgeType, dest);
+    edges.put(edge2Type, dest2);
   }
 }

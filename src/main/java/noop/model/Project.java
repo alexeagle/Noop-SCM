@@ -16,20 +16,21 @@
 
 package noop.model;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
-import java.util.List;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Project implements LanguageNode {
+public class Project extends LanguageNode<Project> {
   private final String name;
   private final String namespace;
+  private final String copyright;
 
+  public String getCopyright() {
+    return copyright;
+  }
+  
   public String getName() {
     return name;
   }
@@ -38,9 +39,10 @@ public class Project implements LanguageNode {
     return namespace;
   }
 
-  public Project(String name, String namespace) {
+  public Project(String name, String namespace, String copyright) {
     this.name = name;
     this.namespace = namespace;
+    this.copyright = copyright;
   }
 
   @Override

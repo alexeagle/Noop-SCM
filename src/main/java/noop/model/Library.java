@@ -16,13 +16,10 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Library implements LanguageNode {
+public class Library extends LanguageNode<Library> {
   public final String name;
   public String copyright;
 

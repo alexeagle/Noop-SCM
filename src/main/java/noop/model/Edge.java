@@ -23,7 +23,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author alexeagle@google.com (Alex Eagle)
  */
 public class Edge {
-  public Edge(LanguageNode src, EdgeType type, LanguageNode dest) {
+  public Edge(int src, EdgeType type, int dest) {
     this.type = type;
     this.src = src;
     this.dest = dest;
@@ -42,8 +42,8 @@ public class Edge {
   }
 
   public final EdgeType type;
-  public final LanguageNode src;
-  public final LanguageNode dest;
+  public final int src;
+  public final int dest;
 
   @Override
   public String toString() {

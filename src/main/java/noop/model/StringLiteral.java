@@ -16,13 +16,10 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class StringLiteral extends Expression {
+public class StringLiteral extends Expression<StringLiteral> {
   public final String value;
 
   public StringLiteral(String value) {

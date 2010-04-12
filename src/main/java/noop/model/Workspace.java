@@ -25,7 +25,7 @@ import java.util.Set;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Workspace implements LanguageNode {
+public class Workspace extends LanguageNode<Workspace> {
   public final Set<Edge> edges = Sets.newHashSet();
   public final List<LanguageNode> nodes = Lists.<LanguageNode>newArrayList(this);
 

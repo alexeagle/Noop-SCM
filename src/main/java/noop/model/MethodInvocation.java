@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class MethodInvocation extends Expression {
+public class MethodInvocation extends Expression<MethodInvocation> {
   public final List<Expression> arguments;
 
   public MethodInvocation(Expression... arguments) {

@@ -16,11 +16,16 @@
 
 package noop.model;
 
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public interface LanguageNode {
-  void accept(ModelVisitor v);
+public abstract class LanguageNode<T> {
+  protected T previousVersion;
+  public abstract void accept(ModelVisitor v);
+  public T getPreviousVersion() {
+    return previousVersion;
+  }
+  public void setPreviousVersion(T previousVersion) {
+    this.previousVersion = previousVersion;
+  }
 }

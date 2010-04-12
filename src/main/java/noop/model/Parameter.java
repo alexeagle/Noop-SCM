@@ -16,13 +16,10 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Parameter implements LanguageNode {
+public class Parameter extends LanguageNode<Parameter> {
   public final String name;
 
   public Parameter(String name) {

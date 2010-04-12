@@ -24,7 +24,7 @@ import static java.util.Collections.emptyList;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Block implements LanguageNode {
+public class Block extends LanguageNode<Block> {
   public final String name;
   public final Clazz returnType;
   public final List<Parameter> parameters;

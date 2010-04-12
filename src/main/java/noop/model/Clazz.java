@@ -16,13 +16,10 @@
 
 package noop.model;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public class Clazz implements LanguageNode {
+public class Clazz extends LanguageNode<Clazz> {
   public final String name;
 
   public Clazz(String name) {

@@ -44,7 +44,5 @@ public abstract class ModelVisitor {
 
   public void visit(IntegerLiteral integerLiteral) {}
 
-  public void visit(Copyright copyright) {}
-
   public void visit(Documentation documentation) {}
 }

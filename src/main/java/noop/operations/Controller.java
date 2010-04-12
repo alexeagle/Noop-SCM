@@ -17,10 +17,11 @@
 package noop.operations;
 
 import noop.model.Edge;
+import noop.model.Edge.EdgeType;
+import noop.model.LanguageNode;
 import noop.model.Workspace;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * @author alexeagle@google.com (Alex Eagle)
@@ -34,18 +35,23 @@ public class Controller {
 
   public void apply(NewNodeOperation operation) {
     workspace.nodes.add(operation.newNode);
-
-    for (Edge edge : operation.edges) {
-      if (!workspace.nodes.contains(edge.src)) {
-        throw new IllegalStateException(String.format("Cannot add edge [%s -> %s] due to non-existant src",
-            edge.src, edge.dest));
-      }
-      if (!workspace.nodes.contains(edge.dest)) {
-        throw new IllegalStateException(String.format("Cannot add edge [%s -> %s] due to non-existant dest",
-            edge.src, edge.dest));
-      }
-      workspace.edges.add(edge);
+    int newNodeId = workspace.nodes.size() - 1;
+    addEdge(newNodeId, operation.container, EdgeType.CONTAIN, true);
+    for (Entry<EdgeType, LanguageNode> edgeTypeLanguageNodeEntry : operation.edges.entries()) {
+      LanguageNode destNode = edgeTypeLanguageNodeEntry.getValue();
+      EdgeType edgeType = edgeTypeLanguageNodeEntry.getKey();
+      addEdge(newNodeId, destNode, edgeType, false);
     }
+  }
+
+  private void addEdge(int newNodeId, LanguageNode destNode, EdgeType edgeType, boolean backwards) {
+    int destId = workspace.nodes.indexOf(destNode);
+    if (destId < 0) {
+      throw new IllegalStateException(String.format("Cannot add edge [%s -> %s] due to non-existant dest",
+          newNodeId, destId));
+    }
+    Edge newEdge = backwards ? new Edge(destId, edgeType, newNodeId) : new Edge(newNodeId, edgeType, destId);
+    workspace.edges.add(newEdge);
   }
 
   public void applyAll(NewNodeOperation... operations) {
@@ -55,6 +61,13 @@ public class Controller {
   }
 
   public void apply(EditNodeOperation operation) {
+    LanguageNode currentValue = workspace.nodes.get(operation.id);
+    if (currentValue.getClass() != operation.newValue.getClass()) {
+      throw new IllegalArgumentException(String.format("Cannot edit node %d with %s because the current type is %s",
+          operation.id, operation.newValue, currentValue.getClass()));
+    }
     
+    operation.newValue.setPreviousVersion(currentValue);
+    workspace.nodes.set(operation.id, operation.newValue);
   }
 }

@@ -19,5 +19,5 @@ package noop.model;
 /**
  * @author alexeagle@google.com (Alex Eagle)
  */
-public abstract class Expression implements LanguageNode {
+public abstract class Expression<T> extends LanguageNode<T> {
 }

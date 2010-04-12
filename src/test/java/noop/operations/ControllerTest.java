@@ -16,15 +16,12 @@
 
 package noop.operations;
 
-import com.google.common.collect.Lists;
 import noop.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 import static noop.model.Edge.EdgeType.CONTAIN;
+import static noop.model.Edge.EdgeType.TYPEOF;
 import static org.junit.Assert.*;
 
 /**
@@ -41,21 +38,44 @@ public class ControllerTest {
   }
 
   @Test public void shouldMakeNewProject() {
-    LanguageNode newNode = new Project("helloWorld", "com.google");
+    LanguageNode newNode = new Project("helloWorld", "com.google", "");
     controller.apply(new NewNodeOperation(newNode, workspace));
     assertTrue(workspace.nodes.contains(newNode));
     assertEquals(1, workspace.edges.size());
-    assertEquals(new Edge(workspace, CONTAIN, newNode), workspace.edges.iterator().next());
+    assertEquals(new Edge(0, CONTAIN, 1), workspace.edges.iterator().next());
+  }
+
+  @Test public void shouldCreateAdditionalEdges() {
+    LanguageNode stringType = new Clazz("String");
+    controller.apply(new NewNodeOperation(stringType, workspace));
+
+    LanguageNode newNode = new StringLiteral("yes");
+    controller.apply(new NewNodeOperation(newNode, workspace, TYPEOF, stringType));
+    assertEquals(3, workspace.edges.size());
+    assertTrue(workspace.edges.contains(new Edge(0, CONTAIN, 1)));
+    assertTrue(workspace.edges.contains(new Edge(0, CONTAIN, 2)));
+    assertTrue(workspace.edges.contains(new Edge(2, TYPEOF, 1)));
   }
 
   @Test public void shouldAllowEditingAStringLiteral() {
     StringLiteral aString = new StringLiteral("hello");
-    workspace = new Workspace();
-    controller = new Controller(workspace);
     controller.apply(new NewNodeOperation(aString, workspace));
 
-    controller.apply(new EditNodeOperation());
+    controller.apply(new EditNodeOperation(1, new StringLiteral("goodbye")));
     assertEquals(2, workspace.nodes.size());
     assertEquals("goodbye", ((StringLiteral) workspace.nodes.get(1)).value);
+    assertEquals("hello", ((StringLiteral) workspace.nodes.get(1).getPreviousVersion()).value);
+  }
+
+  @Test public void shouldErrorWhenEditingWithWrongType() {
+    IntegerLiteral anInt = new IntegerLiteral(12);
+    controller.apply(new NewNodeOperation(anInt, workspace));
+
+    try {
+      controller.apply(new EditNodeOperation(1, new StringLiteral("String is not Int")));
+      fail("should throw IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage(), e.getMessage().contains("IntegerLiteral"));
+    }
   }
 }
